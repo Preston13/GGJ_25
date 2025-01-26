@@ -12,7 +12,5 @@ void UBTS_Distance::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemor
 
 	float Distance = static_cast<float>(FVector::Distance(CurrentLocation, PlayerLocation));
 
-	UE_LOG(LogTemp, Warning, TEXT("Distance: %f"), Distance);
-
 	OwnerComp.GetBlackboardComponent()->SetValueAsFloat(TEXT("Distance"), Distance);
 }

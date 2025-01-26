@@ -5,6 +5,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "AIController.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "EEnemyState.h"
 
@@ -32,11 +33,28 @@ void UBTT_Chase::TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, 
 
 EBTNodeResult::Type UBTT_Chase::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
-	bIsAttacking = false;
 	bIsFinished = false;
 	float Distance = OwnerComp.GetBlackboardComponent()->GetValueAsFloat(TEXT("Distance"));
 
-	AAIController* AIRef = OwnerComp.GetAIOwner();
+	AAIController* AIRef = OwnerComp.GetAIOwner();	
+
+	ACharacter* CharacterRef = AIRef->GetCharacter();
+	
+	if (CharacterRef)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Character"));
+		UCharacterMovementComponent* MoveComp;
+		MoveComp = CharacterRef->GetCharacterMovement();
+		if (MoveComp)
+		{
+			MoveComp->MaxWalkSpeed = ChaseSpeed;
+		}
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("No Character"));
+	}
+	
 
 	if (Distance > AcceptableRadius)
 	{
